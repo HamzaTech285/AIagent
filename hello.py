@@ -1,17 +1,11 @@
-from typing import cast
-# for chainlit
-import chainlit as cl
+import chainlit as cl  # // for chainlit
+from typing import cast # // for streaming
+import os # // for api key
+from dotenv import load_dotenv, find_dotenv  # // for api key
+from agents import Agent, RunConfig, AsyncOpenAI, OpenAIChatCompletionsModel, Runner  # for openAI agent SDK
 
-# for api key
-import os
-from dotenv import load_dotenv, find_dotenv
-
-# for openAI agent SDK
-from agents import Agent, RunConfig, AsyncOpenAI, OpenAIChatCompletionsModel, Runner
-
+# // for API KEY
 load_dotenv(find_dotenv())
-
-# API KEY
 gemini_api_key = os.getenv("GEMINI_API_KEY")
 
 
@@ -53,7 +47,8 @@ agent = Agent(
 # ///////////////////////////////
 
 
-# Starting Masssage and History
+        # Starting Masssage and History
+        
 @cl.on_chat_start
 async def handle_chat_start():
     cl.user_session.set("history", [])
@@ -61,12 +56,15 @@ async def handle_chat_start():
     cl.user_session.set("config", config)
     
     cl.user_session.set("agent", agent)
-    await cl.Message(content="Hello! How can I assist you today?").send()# starting massage
+
+                    # for starting massage
+    # await cl.Message(content="Hello! How can I assist you today?").send()
 
 
 
 
-# For Chainlit User Interface
+        # For Chainlit User Interface
+
 @cl.on_message
 async def handle_massage(message: cl.Message):
     # History
@@ -101,6 +99,13 @@ async def handle_massage(message: cl.Message):
     except Exception as e:
         await msg.update(content=f"Error: {str(e)}")
         print(f"Error: {str(e)}")
+
+
+
+
+
+
+
 
 
 
